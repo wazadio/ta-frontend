@@ -1,6 +1,13 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 
+// firebase
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+
+//vector icons
+apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
+
 import com.android.build.OutputFile
 
 /**
@@ -100,6 +107,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        missingDimensionStrategy 'react-native-camera', 'general'
     }
 
     splits {
@@ -117,6 +125,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file('my-upload-key.keystore')
+            storePassword 'Junidio@306'
+            keyAlias 'my-key-alias'
+            keyPassword 'Junidio@306'
+        }
     }
     buildTypes {
         debug {
@@ -125,7 +139,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
@@ -145,6 +159,16 @@ android {
             }
 
         }
+    }
+
+    // pdf viewer
+    packagingOptions {
+      pickFirst 'lib/x86/libc++_shared.so'
+      pickFirst 'lib/x86_64/libjsc.so'
+      pickFirst 'lib/arm64-v8a/libjsc.so'
+      pickFirst 'lib/arm64-v8a/libc++_shared.so'
+      pickFirst 'lib/x86_64/libc++_shared.so'
+      pickFirst 'lib/armeabi-v7a/libc++_shared.so'
     }
 }
 
